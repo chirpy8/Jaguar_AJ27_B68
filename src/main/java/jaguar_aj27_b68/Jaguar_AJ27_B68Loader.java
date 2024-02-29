@@ -231,7 +231,12 @@ public class Jaguar_AJ27_B68Loader extends AbstractLibrarySupportLoader {
 				for (int x=0; x < (totalBlocks-1); x++)
 				{
 					//note - will fail if only a single 1k block exists....not relevant for target files
-					if ((blockPointers[x+1] - blockPointers[x]) != 1)
+					
+					// note will not work for flawed file format created by BDM downloads
+					// this determines contiguous blocks based on difference between block pointers of 1
+					// which is incorrect, it should be a difference of 1024 as per below
+					
+					if ((blockPointers[x+1] - blockPointers[x]) != 1024)
 					{
 						contigBlocks.add(new blockSpec(startBlockPointer, currentLength+1, startIndex, fileData));
 						currentLength=0;
