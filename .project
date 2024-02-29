@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Jaguar_AJ27_B68</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.jdt.core.javabuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>Ghidra</name>
+			<type>2</type>
+			<location>C:/Users/Dave/Documents/ghidra_10.4_PUBLIC_20230928/ghidra_10.4_PUBLIC</location>
+		</link>
+	</linkedResources>
+</projectDescription>
