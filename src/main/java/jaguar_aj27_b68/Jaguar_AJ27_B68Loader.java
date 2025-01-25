@@ -81,7 +81,7 @@ public class Jaguar_AJ27_B68Loader extends AbstractLibrarySupportLoader {
 		final long SIG_LEN = 2;
 		
 		byte[] START_SEQ = {(byte) 0x04,(byte) 0x00};
-		byte[] CAL_SEQ = {(byte) 0x54,(byte) 0xaa};
+		byte[] CAL_SEQ = {(byte) 0x54,(byte) 0xaa}; //these are 16 bit checksums
 		byte[] MAIN_BOOT_SEQ = {(byte) 0xf0,(byte) 0x97};
 		byte[] SUB_BOOT_SEQ = {(byte) 0x03,(byte) 0x15};
 		
@@ -101,8 +101,10 @@ public class Jaguar_AJ27_B68Loader extends AbstractLibrarySupportLoader {
 		final long LENGTH_OFFSET = 3;
 		int totalBlocks = Byte.toUnsignedInt(provider.readByte(LENGTH_OFFSET));
 		
+		// 168 length allows for inclusion of TPU block and CPU block
+		// 7 length allows to load RAM block
 		boolean validLengthParam =
-				(totalBlocks == 4) || (totalBlocks == 5) || (totalBlocks == 160) || (totalBlocks == 168);
+				(totalBlocks == 4) || (totalBlocks == 5) || (totalBlocks == 7) || (totalBlocks == 160) || (totalBlocks == 168);
 		
 		long fileLength = provider.length();
 		boolean validFileLength = (fileLength == ((totalBlocks*1029) + 6));
@@ -112,7 +114,11 @@ public class Jaguar_AJ27_B68Loader extends AbstractLibrarySupportLoader {
 		byte[] END_SEQ = {(byte) 0x00,(byte) 0x00};
 		byte[] endSeq = provider.readBytes(fileLength+END_OFFSET, END_LEN);
 		
-		boolean validEnd = Arrays.equals(endSeq, END_SEQ);
+		boolean validEnd = true;
+		if (totalBlocks == 160)
+		{
+			validEnd = Arrays.equals(endSeq, END_SEQ);
+		}
 		
 		if (validName && validStart && validSignature
 				&& validLengthParam && validFileLength && validEnd)
