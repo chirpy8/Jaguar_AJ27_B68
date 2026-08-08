@@ -3,3 +3,7 @@
 /data/
 /lib/
 /os/
+/.settings/
+/.gradle/
+.project
+.classpath
