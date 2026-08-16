@@ -24,6 +24,7 @@ import ghidra.app.util.bin.ByteProvider;
 import ghidra.app.util.importer.MessageLog;
 import ghidra.app.util.opinion.AbstractLibrarySupportLoader;
 import ghidra.app.util.opinion.LoadSpec;
+import ghidra.app.util.opinion.Loader;
 import ghidra.app.util.opinion.LoaderTier;
 import ghidra.framework.model.DomainObject;
 import ghidra.program.flatapi.FlatProgramAPI;
@@ -142,8 +143,7 @@ public class Jaguar_AJ27_B68Loader extends AbstractLibrarySupportLoader {
 	
 
 	@Override
-	protected void load(ByteProvider provider, LoadSpec loadSpec, List<Option> options,
-			Program program, TaskMonitor monitor, MessageLog log)
+	protected void load(Program program, Loader.ImporterSettings settings)
 			throws CancelledException, IOException {
 
 		// Get expected number of blocks in header
@@ -155,6 +155,10 @@ public class Jaguar_AJ27_B68Loader extends AbstractLibrarySupportLoader {
 		// Check name for match to do post load analysis
 		// if match, perform analysis including execute scripts, add entry point, etc.
 		//
+		
+		ByteProvider provider = settings.provider();
+		TaskMonitor monitor = settings.monitor();
+		List<Option> options = settings.options();
 		
 		final long LENGTH_OFFSET = 3;
 		int totalBlocks = Byte.toUnsignedInt(provider.readByte(LENGTH_OFFSET));
@@ -266,6 +270,7 @@ public class Jaguar_AJ27_B68Loader extends AbstractLibrarySupportLoader {
 			
 			FlatProgramAPI flatAPI = new FlatProgramAPI(program);
 			int blockIndex = 0;
+			
 
 			for (blockSpec bspec : contigBlocks) {
 				String msg = "Creating memory block at 0x"+Long.toHexString(bspec.getStartAddr())+
@@ -361,7 +366,7 @@ public class Jaguar_AJ27_B68Loader extends AbstractLibrarySupportLoader {
 
 	@Override
 	public List<Option> getDefaultOptions(ByteProvider provider, LoadSpec loadSpec,
-			DomainObject domainObject, boolean isLoadIntoProgram) {
+			DomainObject domainObject, boolean isLoadIntoProgram, boolean mirrorFsLayout) {
 		
 		// single Boolean option is added
 		// a checkbox will be rendered using the default BooleanEditorComponent in OptionsEditorPanel
