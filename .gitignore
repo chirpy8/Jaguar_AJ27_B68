@@ -7,3 +7,5 @@
 /.gradle/
 .project
 .classpath
+extension.properties
+.pydevproject
